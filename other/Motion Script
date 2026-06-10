@@ -85,9 +85,7 @@ while running:
     if player_rect.colliderect(floor_rect):
         player.y -= player.speed_y
         player.speed_y = 0
-        player.ground_collision = True
-    else:
-        player.ground_collision = False
+    player.ground_collision = player_rect.colliderect(floor_rect)
 
     player.move(keys_pressed)
     
