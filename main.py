@@ -26,6 +26,16 @@ def movement(keys):
         if keys[pygame.K_d]:
             enemy.x -= speed
 
+tiles = []
+
+def level_rect(amt_x, amt_y, x, y):
+    temp_var = Tile("Assets/Grass.png", x, y)
+    for _ in range(amt_x):
+        temp_var.draw(screen)
+        tiles.append(temp_var)
+        x += 100
+
+
 running = True
 state = "playing"
 while running:
@@ -33,45 +43,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if state == "menu":
-    # show menu screen
-        screen.fill((135, 206, 235))
-
-    elif state == "playing":
+    if state == "playing":
         screen.fill((30, 80, 30))
         keys = pygame.key.get_pressed()
         movement(keys)
         player.draw(screen)
-        # spawn_timer = 2
-        # spawn_timer -= dt
-        # if spawn_timer <= 0:
-        #     spawn_enemy(randint(1, 5), "Assets/BottleL1.png")
-        #     spawn_timer = 2
         for enemy in enemies:
-        #     # dx = player.x - enemy.x
-        #     # dy = player.y - enemy.y
-
-        #     # if dx > 0:
-        #     #     enemy.x += enemy_speed
-        #     # if dx < 0:
-        #     #     enemy.x -= enemy_speed
-        #     # if dy > 0:
-        #     #     enemy.y += enemy_speed
-        #     # if dy < 0:
-        #     #     enemy.y -= enemy_speed
-        #     player_rect = pygame.Rect(player.x, player.y, 50, 50)
-        #     enemy_rect = pygame.Rect(enemy.x, enemy.y, 50, 50)
-        #     if player_rect.colliderect(enemy_rect):
-        #         player.hp -= 1
-        #         enemy.hp -= 1
-        #         print(player.hp)
-        #         if player.hp < 1:
-        #             state = "game over"
-        #         if enemy.hp < 1:
-        #             enemies.remove(enemy)
             enemy.draw(screen)
-    elif state == "game over":
-    # show game over screen
-        screen.fill((80, 30, 30))
     pygame.display.update()
 pygame.quit()

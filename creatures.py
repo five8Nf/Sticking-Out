@@ -6,6 +6,16 @@ enemies = []
 enemy_num = 0
 enemy_speed = 4
 
+class Tile():
+    def __init__(self, img, x, y):
+        self.x = x
+        self.y = y
+        self.img = pygame.image.load(img).convert_alpha()
+        self.img = pygame.transform.scale(self.img, (100, 100))
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+
 class Player:
     def __init__(self, img, hp):
         self.x = 320
