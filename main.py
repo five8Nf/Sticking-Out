@@ -31,7 +31,6 @@ tiles = []
 def level_rect(amt_x, amt_y, x, y):
     temp_var = Tile("Assets/Grass.png", x, y)
     for _ in range(amt_x):
-        temp_var.draw(screen)
         tiles.append(temp_var)
         x += 100
 
@@ -50,5 +49,7 @@ while running:
         player.draw(screen)
         for enemy in enemies:
             enemy.draw(screen)
+        for tile in tiles:
+            tile.draw(screen)
     pygame.display.update()
 pygame.quit()
