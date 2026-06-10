@@ -38,8 +38,8 @@ class Enemy:
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
-def spawn_enemy(num):
+def spawn_enemy(num, img):
     global enemy_num
     for _ in range(num):
-        enemies.append(Enemy("Enemy.png", 10))
+        enemies.append(Enemy(img, 10))
         enemy_num += 1

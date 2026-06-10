@@ -10,8 +10,8 @@ WINDOW_SIZE = (400, 400)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
 
-player = Player("Sword.png", 100)
-spawn_enemy(5)
+player = Player("Main Glue Left/Mainglue.pg1.png", 100)
+spawn_enemy(5, "Bottle Right/Bottle.pg1.png")
 
 running = True
 state = "playing"
@@ -32,7 +32,7 @@ while running:
         spawn_timer = 2
         spawn_timer -= dt
         if spawn_timer <= 0:
-            spawn_enemy(randint(1, 5))
+            spawn_enemy(randint(1, 5), "Bottle Right/Bottle.pg1.png")
             spawn_timer = 2
         for enemy in enemies:
             dx = player.x - enemy.x
