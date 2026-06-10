@@ -1,0 +1,104 @@
+import pygame
+pygame.init()
+
+#configure screen
+WINDOW_SIZE = (1024,1024)
+screen = pygame.display.set_mode(WINDOW_SIZE)
+
+#configure classes
+class Player:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.speed = 1
+        self.jump_height = 5
+        self.speed_x = 0
+        self.speed_y = 0
+        self.ground_collision = False
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+    
+    def move(self, keys_pressed):
+        if keys_pressed[pygame.K_a]:
+            self.speed_x -= self.speed
+        if keys_pressed[pygame.K_d]:
+            self.speed_x += self.speed
+        if keys_pressed[pygame.K_w] and self.ground_collision:
+            self.speed_y = 0 - self.jump_height
+
+class Enemy:
+    def __init__(self, img, x_pos, y_pos, health):
+        self.x = x_pos
+        self.y = y_pos
+        self.health = health
+        self.img = pygame.image.load(img).convert_alpha()
+        self.img = pygame.transform.scale(self.img, (100,100))
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+
+#configure variables
+gravity = 0.1
+
+#configure sprites
+player = Player()
+enemy1 = Enemy("enemy_blob.png", 150, 150, 100)
+
+#main loop-------------------------------------------------------------------------------------------------------------------------------------
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        
+    screen.fill((255,255,255))
+
+    #create hitboxes
+    player_rect = pygame.Rect(player.x, player.y, 50, 50)
+    enemy1_rect = pygame.Rect(enemy1.x, enemy1.y, 50, 50)
+    floor_rect = pygame.Rect(0, 680, 1000, 500)
+
+    #if player.health > 0:
+    #    player.img = pygame.image.load("alive_blob.png").convert_alpha()
+    #    if player_rect.colliderect(enemy1_rect):
+    #        player.health -= 1
+    #        player.img = pygame.image.load("damaged_blob.png").convert_alpha()
+    #else:
+    #    player.img = pygame.image.load("dead_blob.png").convert_alpha()
+    #
+    #if player.health > 0:
+    #    keys_pressed = pygame.key.get_pressed()
+    #   player.move(keys_pressed)
+    #
+    
+    #TEMPORARY CODE TO TEST MOVEMENT
+    player.img = pygame.image.load("alive_blob.png").convert_alpha()
+    floor_img = pygame.image.load("floor1.png").convert_alpha()
+    screen.blit(floor_img, (200,200))
+    floor_img = pygame.transform.scale(floor_img, (1000,500))
+    screen.blit(floor_img, (0,300))
+    keys_pressed = pygame.key.get_pressed()
+    if player_rect.colliderect(floor_rect):
+        player.y -= player.speed_y
+        player.speed_y = 0
+        player.ground_collision = True
+    else:
+        player.ground_collision = False
+
+    player.move(keys_pressed)
+    
+    player.speed_y += gravity
+    player.x += player.speed_x
+    player.y += player.speed_y
+    player.x = player.x * 0.9
+
+    player.img = pygame.transform.scale(player.img, (100,100))
+    
+    enemy1.draw(screen)
+    player.draw(screen)
+
+    pygame.display.update()
+
+pygame.quit()
