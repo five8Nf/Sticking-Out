@@ -6,7 +6,7 @@ from creatures import *
 pygame.init()
 
 pygame.display.set_caption("Sticking Out")
-WINDOW_SIZE = (640, 400)
+WINDOW_SIZE = (1280, 720)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
 
@@ -35,7 +35,7 @@ while running:
             running = False
     if state == "menu":
     # show menu screen
-        screen.fill((30, 30, 80))
+        screen.fill((135, 206, 235))
 
     elif state == "playing":
         screen.fill((30, 80, 30))

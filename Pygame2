@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 #configure screen
-WINDOW_SIZE = (1024,1024)
+WINDOW_SIZE = (1280, 720)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 
 #configure classes
