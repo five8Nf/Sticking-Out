@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+from math import floor
 
 enemies = []
 enemy_num = 0
@@ -7,10 +8,10 @@ enemy_speed = 4
 
 class Player:
     def __init__(self, img, hp):
-        self.x = 100
-        self.y = 100
-        self.speed = 5
+        self.x = 320
+        self.y = 200
         self.hp = hp
+        self.frame = 1
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
     
@@ -18,19 +19,21 @@ class Player:
         screen.blit(self.img, (self.x, self.y))
     
     def movement(self, keys):
-        if keys[pygame.K_w]:
-            self.y -= self.speed
-        if keys[pygame.K_a]:
-            self.x -= self.speed
-        if keys[pygame.K_s]:
-            self.y += self.speed
-        if keys[pygame.K_d]:
-            self.x += self.speed
+        if not (keys[pygame.K_a] and keys[pygame.K_d]):
+            if keys[pygame.K_a]:
+                self.img = pygame.image.load(f"Assets/PlayerL{floor(self.frame)%4}.png").convert_alpha()
+                self.img = pygame.transform.scale(self.img, (100, 100))
+                self.frame += 0.5
+            if keys[pygame.K_d]:
+                self.img = pygame.image.load(f"Assets/PlayerR{floor(self.frame)%4}.png").convert_alpha()
+                self.img = pygame.transform.scale(self.img, (100, 100))
+                self.frame += 0.5
+        
 
 class Enemy:
     def __init__(self, img, hp):
-        self.x = randint(100, 300)
-        self.y = randint(100, 300)
+        self.x = randint(0, 640)
+        self.y = randint(0, 400)
         self.hp = hp
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))

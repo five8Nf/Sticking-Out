@@ -6,12 +6,25 @@ from creatures import *
 pygame.init()
 
 pygame.display.set_caption("Sticking Out")
-WINDOW_SIZE = (400, 400)
+WINDOW_SIZE = (640, 400)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
 
 player = Player("Assets/PlayerL1.png", 100)
-# spawn_enemy(5, "Assets/BottleL1.png")
+spawn_enemy(5, "Assets/BottleL1.png")
+
+speed = 5
+def movement(keys):
+    player.movement(keys)
+    for enemy in enemies:
+        if keys[pygame.K_w]:
+            enemy.y += speed
+        if keys[pygame.K_a]:
+            enemy.x += speed
+        if keys[pygame.K_s]:
+            enemy.y -= speed
+        if keys[pygame.K_d]:
+            enemy.x -= speed
 
 running = True
 state = "playing"
@@ -27,14 +40,14 @@ while running:
     elif state == "playing":
         screen.fill((30, 80, 30))
         keys = pygame.key.get_pressed()
-        player.movement(keys)
+        movement(keys)
         player.draw(screen)
         # spawn_timer = 2
         # spawn_timer -= dt
         # if spawn_timer <= 0:
         #     spawn_enemy(randint(1, 5), "Assets/BottleL1.png")
         #     spawn_timer = 2
-        # for enemy in enemies:
+        for enemy in enemies:
         #     # dx = player.x - enemy.x
         #     # dy = player.y - enemy.y
 
@@ -56,7 +69,7 @@ while running:
         #             state = "game over"
         #         if enemy.hp < 1:
         #             enemies.remove(enemy)
-        #     enemy.draw(screen)
+            enemy.draw(screen)
     elif state == "game over":
     # show game over screen
         screen.fill((80, 30, 30))
