@@ -25,18 +25,32 @@ def movement(keys):
             enemy.y -= speed
         if keys[pygame.K_d]:
             enemy.x -= speed
+    for tile in tiles:
+        if keys[pygame.K_w]:
+            tile.y += speed
+        if keys[pygame.K_a]:
+            tile.x += speed
+        if keys[pygame.K_s]:
+            tile.y -= speed
+        if keys[pygame.K_d]:
+            tile.x -= speed
 
 tiles = []
+walls = {"Top" : [], 
+         "Bottom" : [], 
+         "Left" : [], 
+         "Right": []
+         }
 
 def level_rect(amt_x, amt_y, x, y):
-    temp_var = Tile("Assets/Grass.png", x, y)
     for _ in range(amt_x):
-        tiles.append(temp_var)
+        tiles.append(Tile("Assets/Grass.png", x, y))
         x += 100
 
 
 running = True
 state = "playing"
+level_rect(100, 1, 100, 100)
 while running:
     dt = clock.tick(60) / 1000
     for event in pygame.event.get():
