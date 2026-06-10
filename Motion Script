@@ -1,3 +1,5 @@
+from asyncio import wait
+
 import pygame
 pygame.init()
 
@@ -9,8 +11,8 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 class Player:
     def __init__(self):
         self.x = 0
-        self.y = 0
-        self.speed = 1
+        self.y = 600
+        self.speed = 0.5
         self.jump_height = 5
         self.speed_x = 0
         self.speed_y = 0
@@ -26,6 +28,14 @@ class Player:
             self.speed_x += self.speed
         if keys_pressed[pygame.K_w] and self.ground_collision:
             self.speed_y = 0 - self.jump_height
+
+class Enemy:
+    def __init__(self, img, x_pos, y_pos, health):
+        self.x = x_pos
+        self.y = y_pos
+        self.health = health
+        self.img = pygame.image.load(img).convert_alpha()
+        self.img = pygame.transform.scale(self.img, (100,100))
     
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
@@ -35,6 +45,7 @@ gravity = 0.1
 
 #configure sprites
 player = Player()
+enemy1 = Enemy("enemy_blob.png", 150, 150, 100)
 
 #main loop-------------------------------------------------------------------------------------------------------------------------------------
 running = True
@@ -48,6 +59,7 @@ while running:
 
     #create hitboxes
     player_rect = pygame.Rect(player.x, player.y, 50, 50)
+    enemy1_rect = pygame.Rect(enemy1.x, enemy1.y, 50, 50)
     floor_rect = pygame.Rect(0, 680, 1000, 500)
 
     #if player.health > 0:
@@ -86,7 +98,11 @@ while running:
 
     player.img = pygame.transform.scale(player.img, (100,100))
     
+    enemy1.draw(screen)
     player.draw(screen)
+    
+#wait 5 milliseconds to slow down the game loop, otherwise it runs too fast
+    pygame.time.delay(5)
 
     pygame.display.update()
 
