@@ -43,8 +43,9 @@ walls = {"Top" : [],
          }
 
 def level_rect(amt_x, amt_y, x, y):
+    
     for _ in range(amt_x):
-        tiles.append(Tile("Assets/Grass.png", x, y))
+        tiles.append(Tile("Assets/Tile_down.png", x, y))
         x += 100
 
 
