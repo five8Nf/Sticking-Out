@@ -10,8 +10,7 @@ class Tile():
     def __init__(self, img, x, y):
         self.x = x
         self.y = y
-        self.speed_y
-        self.ground_collision = False
+        self.speed_y = 0
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
     
@@ -24,6 +23,8 @@ class Player:
         self.y = 350
         self.hp = hp
         self.frame = 1
+        self.speed_y = 5               # start falling, not floating
+        self.ground_collision = False
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
     
@@ -40,13 +41,13 @@ class Player:
                 self.img = pygame.image.load(f"Assets/PlayerR{floor(self.frame)%4}.png").convert_alpha()
                 self.img = pygame.transform.scale(self.img, (100, 100))
                 self.frame += 0.5
-        
 
 class Enemy:
     def __init__(self, img, hp):
         self.x = randint(0, 640)
         self.y = randint(0, 400)
         self.speed_y = 0
+        self.jump_height = 10
         self.ground_collision = False
         self.hp = hp
         self.img = pygame.image.load(img).convert_alpha()
