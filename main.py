@@ -2,12 +2,18 @@ import pygame
 from Entities import *
 
 pygame.init()
+pygame.mixer.init()
 pygame.display.set_caption("Sticking Out")
 WINDOW_SIZE = (1280, 720)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
 
-player = Player("Assets/PlayerL1.png", 100)
+x = 0
+hp = []
+for i in range(5):
+    hp.append(Health(x, 0))
+    x += 50
+player = Player("Assets/PlayerL1.png", 5)
 
 speed = 5
 gravity = 0.3
@@ -111,9 +117,23 @@ def movement(keys):
         for wall_list in walls.values():
             for rect in wall_list: rect.x -= speed
 
+def enemy_move():
+    for enemy in enemies:
+        if enemy.y == player.y:
+            enemy.frame += 1
+            if enemy.x > player.x:
+                enemy.x -= 4
+                enemy.img = pygame.image.load(f"Assets/BottleR{enemy.frame%4}.png").convert_alpha()
+                enemy.img = pygame.transform.scale(enemy.img, (100, 100))
+            else:
+                enemy.x += 4
+                enemy.img = pygame.image.load(f"Assets/BottleL{enemy.frame%4}.png").convert_alpha()
+                enemy.img = pygame.transform.scale(enemy.img, (100, 100))
+
 running = True
 state = "playing"
-
+pygame.mixer.music.load("Assets/bg_sound.mp3")
+pygame.mixer.music.play(-1)
 level_rect(100, 1, 320, 450)
 
 while running:
@@ -128,7 +148,10 @@ while running:
         keys = pygame.key.get_pressed()
         movement(keys)
         update_physics()
+        enemy_move()
         
+        for heart in hp:
+            heart.draw(screen)
         player.draw(screen)
         for enemy in enemies:
             enemy.draw(screen)

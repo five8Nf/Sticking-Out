@@ -17,6 +17,16 @@ class Tile():
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
+class Health:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.img = pygame.image.load("Assets/Full Heart.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (65, 64))
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+
 class Player:
     def __init__(self, img, hp):
         self.x = 320
@@ -50,6 +60,7 @@ class Enemy:
         self.jump_height = 10
         self.ground_collision = False
         self.hp = hp
+        self.frame = 1
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
     
