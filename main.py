@@ -10,14 +10,16 @@ clock = pygame.time.Clock()
 player = Player("Assets/PlayerL1.png", 100)
 
 speed = 5
-gravity = 0.5
+gravity = 0.3
 tiles = []
 walls = {"nofall": [], "Bottom": [], "Left": [], "Right": []}
 
 def level_rect(amt_x, amt_y, x, y):
     start_x = x - (amt_x - 1) * 100
-    platform_rect = pygame.Rect(start_x, y, amt_x * 100, 1)
+    platform_rect = pygame.Rect(start_x, y, amt_x * 100, 20)
     walls["nofall"].append(platform_rect)
+    platform_rect = pygame.Rect(start_x, (y+100), amt_x * 100, 20)
+    walls["Bottom"].append(platform_rect)
     
     for _ in range(amt_x):
         tiles.append(Tile("Assets/Tile_down.png", x, y))
@@ -36,6 +38,11 @@ def update_physics():
         player.speed_y += gravity
 
     if player.speed_y != 0:
+        player_hitbox = pygame.Rect(player.x, player.y, 100, 100)
+        for bottom in walls["Bottom"]:
+            if player_hitbox.colliderect(bottom):
+                player.speed_y = 0
+                break
         for tile in tiles: tile.y -= player.speed_y
         for wall_list in walls.values():
             for rect in wall_list: rect.y -= player.speed_y
