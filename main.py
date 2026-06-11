@@ -15,7 +15,7 @@ for i in range(5):
     x += 50
 player = Player("Assets/PlayerL1.png", 5)
 
-speed = 5
+speed = 10
 gravity = 0.3
 tiles = []
 walls = {"nofall": [], "Bottom": [], "Left": [], "Right": []}
@@ -26,6 +26,7 @@ def level_rect(amt_x, amt_y, x, y):
     walls["nofall"].append(platform_rect)
     platform_rect = pygame.Rect(start_x, (y+100), amt_x * 100, 20)
     walls["Bottom"].append(platform_rect)
+
     
     for _ in range(amt_x):
         tiles.append(Tile("Assets/Tile_down.png", x, y))
@@ -44,19 +45,22 @@ def update_physics():
         player.speed_y += gravity
 
     if player.speed_y != 0:
-        player_hitbox = pygame.Rect(player.x, player.y, 100, 100)
+        player_hitbox = pygame.Rect(player.x, player.y, 20, 100)
         for bottom in walls["Bottom"]:
             if player_hitbox.colliderect(bottom):
                 player.speed_y = 0
                 break
         for tile in tiles: tile.y -= player.speed_y
         for wall_list in walls.values():
-            for rect in wall_list: rect.y -= player.speed_y
+            for rect in wall_list: 
+                rect.y -= player.speed_y
+        for bullet in bullet_list:
+            bullet.y -= player.speed_y
         for enemy in enemies:
             if not enemy.ground_collision:
                 enemy.y -= player.speed_y
 
-    player_hitbox = pygame.Rect(player.x, player.y, 100, 100)
+    player_hitbox = pygame.Rect(player.x, player.y, 20, 100)
     player_sensor = pygame.Rect(player.x, player.y + 100, 100, 2)
     player.ground_collision = False
 
@@ -118,23 +122,33 @@ def movement(keys):
             for rect in wall_list: rect.x -= speed
 
 def enemy_move():
+    global state
+    player_hitbox = pygame.Rect(player.x, player.y, 30, 100)
     for enemy in enemies:
-        if enemy.y == player.y:
-            enemy.frame += 1
-            if enemy.x > player.x:
-                enemy.x -= 4
-                enemy.img = pygame.image.load(f"Assets/BottleR{enemy.frame%4}.png").convert_alpha()
-                enemy.img = pygame.transform.scale(enemy.img, (100, 100))
+        enemy_hitbox = pygame.Rect(enemy.x, enemy.y, 30, 100)
+        if enemy_hitbox.colliderect(player_hitbox) and player.iframes == 0:
+            player.hp -= 1
+            if player.hp < 1:
+                state = "died"
             else:
-                enemy.x += 4
-                enemy.img = pygame.image.load(f"Assets/BottleL{enemy.frame%4}.png").convert_alpha()
-                enemy.img = pygame.transform.scale(enemy.img, (100, 100))
+                hp.pop(player.hp)
+                player.iframes = 90
+        enemy.frame += 1
+        if enemy.x > player.x:
+            enemy.x -= 9
+            enemy.img = pygame.image.load(f"Assets/BottleR{enemy.frame%4}.png").convert_alpha()
+            enemy.img = pygame.transform.scale(enemy.img, (100, 100))
+        else:
+            enemy.x += 9
+            enemy.img = pygame.image.load(f"Assets/BottleL{enemy.frame%4}.png").convert_alpha()
+            enemy.img = pygame.transform.scale(enemy.img, (100, 100))
 
 running = True
 state = "playing"
 pygame.mixer.music.load("Assets/bg_sound.mp3")
 pygame.mixer.music.play(-1)
-level_rect(100, 1, 320, 450)
+level_rect(25, 1, 320, 450)
+bullet_list = []
 
 while running:
     clock.tick(60)
@@ -157,7 +171,13 @@ while running:
             enemy.draw(screen)
         for tile in tiles:
             tile.draw(screen)
-            
-        pygame.display.update()
+        player.iframes -= 1
+
+    elif state == "died":
+        img = pygame.image.load("Assets/Death screen.png").convert_alpha()
+        img = pygame.transform.scale(img, (1280, 720))
+        screen.blit(img, (0, 0))
+    
+    pygame.display.update()
 
 pygame.quit()

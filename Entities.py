@@ -33,7 +33,8 @@ class Player:
         self.y = 350
         self.hp = hp
         self.frame = 1
-        self.speed_y = 5               # start falling, not floating
+        self.speed_y = 5
+        self.iframes = 0
         self.ground_collision = False
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
@@ -61,14 +62,34 @@ class Enemy:
         self.ground_collision = False
         self.hp = hp
         self.frame = 1
+        self.speed = 9
         self.img = pygame.image.load(img).convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
     
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
+class Player_Bullet:
+    def __init__(self, speed, x, y):
+        self.x = x
+        self.y = y
+        self.speed_y = 0
+        self.speed = speed
+        self.jump_height = 10
+        self.lifespan = 3600
+        self.type = variation
+        self.img = pygame.image.load("Assets/Ammo.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (100, 100))
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+    
+    def update():
+        self.lifespan -= 1
+        self.x += self.speed
+
 def spawn_enemy(num, img):
     global enemy_num
     for _ in range(num):
-        enemies.append(Enemy(img, 10))
+        enemies.append(Enemy(img, 5))
         enemy_num += 1
