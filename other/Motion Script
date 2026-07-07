@@ -88,7 +88,7 @@ while running:
         player.speed_y = 0
     player.ground_collision = player_rect.colliderect(floor_rect)
 
-    if keys_pressed[pygame.K_SPACEf]:
+    if keys_pressed[pygame.K_SPACE]:
             player.x = player.y = 0
 
     player.move(keys_pressed)

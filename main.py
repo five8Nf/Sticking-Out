@@ -180,7 +180,7 @@ while running:
         if keys[pygame.K_SPACE]:
             state = "playing"
     elif state == "playing":
-        img = pygame.image.load("Assets/Wood background.png").convert_alpha()
+        img = pygame.image.load("Assets/open_window_bg.png").convert_alpha()
         img = pygame.transform.scale(img, (1280, 720))
         screen.blit(img, (0, 0))
         
@@ -232,7 +232,7 @@ while running:
         #         enemy_bullet_list.append(Enemy_Bullet(20, enemies[0].x, enemies[0].y, player.x, player.y))
 
         if len(enemies) == 0:
-            enemies.append(Enemy("Assets/Boss L1.png", 50))
+            enemies.append(Enemy("Assets/Boss L1.png", 10))
             enemy_name = "Boss "
 
         player.iframes -= 1
