@@ -45,7 +45,7 @@ gravity = 0.1
 
 #configure sprites
 player = Player()
-enemy1 = Enemy("enemy_blob.png", 150, 150, 100)
+#enemy1 = Enemy("enemy_blob.png", 150, 150, 100)
 
 #main loop-------------------------------------------------------------------------------------------------------------------------------------
 running = True
@@ -59,7 +59,7 @@ while running:
 
     #create hitboxes
     player_rect = pygame.Rect(player.x, player.y, 50, 50)
-    enemy1_rect = pygame.Rect(enemy1.x, enemy1.y, 50, 50)
+    #enemy1_rect = pygame.Rect(enemy1.x, enemy1.y, 50, 50)
     floor_rect = pygame.Rect(0, 680, 1000, 500)
 
     #if player.health > 0:
@@ -82,12 +82,16 @@ while running:
     floor_img = pygame.transform.scale(floor_img, (1000,500))
     screen.blit(floor_img, (0,300))
     keys_pressed = pygame.key.get_pressed()
+    
     if player_rect.colliderect(floor_rect):
         player.y -= player.speed_y
         player.speed_y = 0
         player.ground_collision = True
     else:
         player.ground_collision = False
+
+    if keys_pressed[pygame.K_SPACEf]:
+            player.x = player.y = 0
 
     player.move(keys_pressed)
     
@@ -98,11 +102,11 @@ while running:
 
     player.img = pygame.transform.scale(player.img, (100,100))
     
-    enemy1.draw(screen)
+    #enemy1.draw(screen)
     player.draw(screen)
     
-#wait 5 milliseconds to slow down the game loop, otherwise it runs too fast
-    pygame.time.delay(5)
+#wait 10 milliseconds to slow down the game loop, otherwise it runs too fast
+    pygame.time.delay(10)
 
     pygame.display.update()
 
